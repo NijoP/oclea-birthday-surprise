@@ -776,8 +776,8 @@
                 playFinalAnim();
             }
 
-            // Start music on first interaction
-            if (!isMusicPlaying && bgMusic.paused) {
+            // Start music strictly when transitioning from Screen 1 to Screen 2
+            if (currentScreen === 1 && !isMusicPlaying && bgMusic.paused) {
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     musicBtn.classList.remove('muted');
@@ -788,11 +788,6 @@
         // --- INTERACTION LOGIC ---
         cake.addEventListener('click', () => {
             launchConfetti();
-            if (!isMusicPlaying) {
-                bgMusic.play();
-                isMusicPlaying = true;
-                musicBtn.classList.remove('muted');
-            }
             msgContainer.style.opacity = '1';
             msgContainer.style.pointerEvents = 'all';
             msgContainer.style.transform = 'translateY(0)';
