@@ -772,16 +772,23 @@
             currentScreen++;
             screens[currentScreen].classList.add('active');
 
-            if (currentScreen === 3) {
-                playFinalAnim();
-            }
-
-            // Start music strictly when transitioning from Screen 1 to Screen 2
-            if (currentScreen === 1 && !isMusicPlaying && bgMusic.paused) {
+            // --- MUSIC LOGIC ---
+            // Start music when transitioning to Screen 2 (Index 1) or Screen 3 (Index 2)
+            if ((currentScreen === 1 || currentScreen === 2) && !isMusicPlaying) {
                 bgMusic.play().then(() => {
                     isMusicPlaying = true;
                     musicBtn.classList.remove('muted');
                 }).catch(e => console.log("Audio waiting for stronger interaction"));
+            }
+            // Stop music when transitioning to Screen 4 (Index 3)
+            else if (currentScreen === 3 && isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+                musicBtn.classList.add('muted');
+            }
+
+            if (currentScreen === 3) {
+                playFinalAnim();
             }
         }
 
