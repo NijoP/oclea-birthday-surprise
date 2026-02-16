@@ -608,13 +608,34 @@
         }
 
         .signature {
-            margin-top: 3rem;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            color: var(--primary-pink);
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #D81B60;
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 1s ease-out;
+            transform: translateY(10px);
+            transition: all 0.6s ease;
+        }
+
+        /* Portfolio Photo */
+        .final-photo-container {
+            width: 260px;
+            margin: 0 auto 1.5rem;
+            padding: 10px 10px 35px;
+            /* Bottom heavy for polaroid look */
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border-radius: 4px;
+            transform: rotate(-3deg) translateY(20px);
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .final-photo-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            display: block;
         }
     </style>
 </head>
@@ -696,6 +717,11 @@
     <!-- SCREEN 4: FINAL MESSAGE -->
     <div id="screen-4" class="screen">
         <div class="final-content">
+
+            <div class="final-photo-container" id="final-photo">
+                <img src="WhatsApp Image 2026-02-17 at 2.51.53 AM.jpeg" alt="Memory Photo">
+            </div>
+
             <p class="final-text" id="final-text-1">Once again, happy birthday Auxii.</p>
             <p class="final-text" id="final-text-2">Some people just become part of your daily life — you’re one of
                 those for me.</p>
@@ -844,6 +870,7 @@
         // --- FINAL REVEAL ---
         function playFinalAnim() {
             const texts = [
+                document.getElementById('final-photo'),
                 document.getElementById('final-text-1'),
                 document.getElementById('final-text-2'),
                 document.getElementById('final-text-3'),
