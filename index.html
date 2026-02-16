@@ -377,38 +377,50 @@
             animation: float-tray 2.5s ease-in-out infinite;
         }
 
-        .egg-tray-img {
+        .egg-tray-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .egg-item {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
             transition: transform 0.3s;
-            /* Animated Real Egg Tray */
-            animation: bounce-shake 3s ease-in-out infinite;
         }
 
-        @keyframes bounce-shake {
-
-            0%,
-            100% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            25% {
-                transform: translateY(-5px) rotate(-2deg);
-            }
-
-            50% {
-                transform: translateY(0) rotate(0deg);
-            }
-
-            75% {
-                transform: translateY(-3px) rotate(2deg);
-            }
+        .egg-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .gift-container:active .egg-tray-img {
-            transform: scale(0.95);
+        .egg-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 0.7rem;
+            padding: 4px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .egg-tray-img {
+            display: none;
+            /* Removed single image */
         }
 
         @keyframes float-tray {
@@ -590,9 +602,32 @@
         <h2 id="gift-title" style="margin-bottom: 2rem;">I got something special for you 😌</h2>
 
         <div class="gift-container" id="gift-box">
-            <!-- Real Egg Tray Image (Placeholder) -->
-            <!-- Replace src with your specific 'egg tray png' -->
-            <img src="https://loremflickr.com/400/300/egg,tray" alt="Egg Tray" class="egg-tray-img">
+            <div class="egg-tray-grid">
+                <!-- Omelette -->
+                <div class="egg-item">
+                    <img src="https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=300&q=80"
+                        alt="Omelette">
+                    <div class="egg-label">Omelette</div>
+                </div>
+                <!-- Fried (Bullseye) -->
+                <div class="egg-item">
+                    <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=300&q=80"
+                        alt="Bullseye">
+                    <div class="egg-label">Bullseye</div>
+                </div>
+                <!-- Scrambled -->
+                <div class="egg-item">
+                    <img src="https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6?auto=format&fit=crop&w=300&q=80"
+                        alt="Scrambled">
+                    <div class="egg-label">Scrambled</div>
+                </div>
+                <!-- Boiled -->
+                <div class="egg-item">
+                    <img src="https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?auto=format&fit=crop&w=300&q=80"
+                        alt="Boiled">
+                    <div class="egg-label">Boiled</div>
+                </div>
+            </div>
         </div>
 
         <p class="click-hint">Click the tray 🥚</p>
@@ -701,13 +736,12 @@
                 giftBox.classList.add('open');
                 document.querySelector('.click-hint').style.opacity = '0';
 
-                // Pop effect for tray (scale 0.85 -> 1)
-                const tray = document.querySelector('.egg-tray-img');
-                tray.style.animation = 'none';
-                tray.style.transform = 'scale(0.85)';
+                // Pop effect for grid
+                giftBox.style.animation = 'none';
+                giftBox.style.transform = 'scale(0.85)';
                 setTimeout(() => {
-                    tray.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                    tray.style.transform = 'scale(1)';
+                    giftBox.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    giftBox.style.transform = 'scale(1)';
                 }, 50);
 
                 setTimeout(() => {
