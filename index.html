@@ -237,6 +237,12 @@
             transform: scale(1.05);
         }
 
+        /* Polished Animations */
+        .cake-container:active {
+            transform: scale(0.92) rotate(-6deg);
+            /* Requested polish */
+        }
+
         .layer {
             position: absolute;
             width: 100%;
@@ -367,8 +373,8 @@
             height: auto;
             margin: 2rem auto;
             cursor: pointer;
-            /* Floating animation */
-            animation: float-tray 3s ease-in-out infinite;
+            /* Floating animation slowed to 2.5s */
+            animation: float-tray 2.5s ease-in-out infinite;
         }
 
         .egg-tray-img {
@@ -497,8 +503,11 @@
             margin-bottom: 1.5rem;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 1s ease-out;
+            transition: all 0.9s ease-out;
+            /* Slower fade */
             color: #5D4037;
+            line-height: 1.6;
+            /* Premium spacing */
         }
 
         .highlight {
@@ -510,12 +519,13 @@
         .final-long-msg {
             font-family: 'Outfit', sans-serif;
             font-size: 1.1rem;
-            line-height: 1.6;
+            line-height: 1.8;
+            /* Premium spacing */
             margin-top: 2rem;
             color: #6d4c41;
             opacity: 0;
             transform: translateY(20px);
-            transition: all 1s ease-out;
+            transition: all 0.9s ease-out;
         }
 
         .signature {
@@ -565,9 +575,10 @@
 
         <div class="celebration-msg" id="msg-container">
             <h2>Happy 20th Birthday Auxii! 🥳🌸</h2>
-            <p>Watching you grow has been truly special to me.<br>
-                Stay happy, stay strong…<br>
-                Your annoying but caring best friend is always here for you 💛</p>
+            <p>Another year older…<br>
+                still not wiser, but we move. 😌<br><br>
+                Stay happy, stay strong —<br>
+                your annoying but premium-quality best friend is always here. 💛</p>
             <button class="btn" id="btn-gift">I have a gift for you 🎁</button>
         </div>
 
@@ -587,9 +598,9 @@
         <p class="click-hint">Click the tray 🥚</p>
 
         <div class="funny-msg" id="funny-msg">
-            <h3>Because I know…<br>no gift can beat your love for eggs 😂🥚</h3>
-            <p style="margin-top:0.5rem; font-size:0.9rem; color: #777;">Your protein supply is secured by <br>your
-                caring best friend 💛</p>
+            <h3>Because I know…<br>no fancy gift can compete<br>with your legendary love for eggs. 😂🥚</h3>
+            <p style="margin-top:0.5rem; font-size:0.9rem; color: #777;">Emergency egg backup<br>
+                successfully delivered by your management. 😌🥚</p>
             <button class="btn" id="btn-final" style="pointer-events:all; opacity:1; margin-top:1rem;">One last message
                 🌸</button>
         </div>
@@ -598,15 +609,15 @@
     <!-- SCREEN 4: FINAL MESSAGE -->
     <div id="screen-4" class="screen">
         <div class="final-content">
-            <p class="final-text" id="final-text-1">Sometimes life gives us friends,</p>
-            <p class="final-text" id="final-text-2">and sometimes it gives us family in disguise.</p>
-            <p class="final-text highlight" id="final-text-3">You are both to me. 🌸</p>
+            <p class="final-text" id="final-text-1">Out of all the people in this world,</p>
+            <p class="final-text" id="final-text-2">I somehow got stuck with you —<br>professional troublemaker,</p>
+            <p class="final-text highlight" id="final-text-3">but still my favorite human. 🌸</p>
             <div class="final-long-msg" id="final-text-4">
-                Stay the same kind soul you are…<br>
-                I'm always cheering for you, little sister. 💛✨
+                Stay happy, stay crazy…<br>
+                I'm always around, whether you need me or not. 😌💛
             </div>
             <div class="signature" id="final-sig">
-                — Always here,<br>your annoying but caring best friend
+                — Your officially assigned annoying best friend
             </div>
 
             <button class="btn" id="btn-replay" style="margin-top:2rem; opacity:0; pointer-events:all;">Replay
@@ -617,201 +628,185 @@
     <script>
         // --- DATA ---
         const poemLines = [
-            "Like bougainvillea blooming in gentle sunlight,",
-            "you color the world in your own quiet way.",
-            "Stay happy, stay bright —",
-            "my little star, keep shining always. ✨",
+            "Like bougainvillea in full drama bloom,",
+            "you somehow manage to be cute and chaotic at the same time.",
+            "Stay happy, stay weird —",
+            "my little headache… keep shining always. ✨"
         ];
 
         // --- ELEMENTS ---
-        const screen1 = document.getElementById('screen-1');
-        const screen2 = document.getElementById('screen-2');
-        const screen3 = document.getElementById('screen-3');
-        const screen4 = document.getElementById('screen-4');
-
+        const screens = document.querySelectorAll('.screen');
         const poemEl = document.getElementById('poem-text');
         const btnContinue = document.getElementById('btn-continue');
-
-        // Screen 2 Elements
         const cake = document.getElementById('cake');
         const msgContainer = document.getElementById('msg-container');
         const btnGift = document.getElementById('btn-gift');
-        const canvas = document.getElementById('confetti-canvas');
-        const ctx = canvas.getContext('2d');
-
-        // Screen 3 Elements
         const giftBox = document.getElementById('gift-box');
         const funnyMsg = document.getElementById('funny-msg');
         const btnFinal = document.getElementById('btn-final');
-        const clickHint = document.querySelector('.click-hint');
-
-        // Screen 4 Elements
         const btnReplay = document.getElementById('btn-replay');
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
 
-        // --- LOGIC ---
-
-        // Typewriter (Screen 1)
-        function typeWriter() {
-            let lineIndex = 0;
-            let charIndex = 0;
-            poemEl.textContent = "";
-
-            function type() {
-                if (lineIndex < poemLines.length) {
-                    const currentLine = poemLines[lineIndex];
-                    if (charIndex < currentLine.length) {
-                        poemEl.textContent += currentLine.charAt(charIndex);
-                        charIndex++;
-                        setTimeout(type, 50);
-                    } else {
-                        poemEl.textContent += '\n';
-                        lineIndex++;
-                        charIndex = 0;
-                        setTimeout(type, 400);
-                    }
-                } else {
-                    document.querySelector('.cursor').style.display = 'none';
-                    btnContinue.classList.add('visible');
-                    btnContinue.style.pointerEvents = "all";
-                }
-            }
-            setTimeout(type, 3500); // Start after tree
-        }
-
-        // Confetti (Screen 2)
-        let confettiParticles = [];
+        // --- STATE ---
+        let currentScreen = 0;
+        let lineIndex = 0;
+        let charIndex = 0;
         let animationId = null;
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Confetti {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height - canvas.height;
-                this.size = Math.random() * 10 + 5;
-                this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                this.velocity = {
-                    x: (Math.random() - 0.5) * 5,
-                    y: Math.random() * 5 + 2
-                };
-                this.rotation = Math.random() * 360;
-                this.rotationSpeed = (Math.random() - 0.5) * 10;
-            }
-            update() {
-                this.x += this.velocity.x;
-                this.y += this.velocity.y;
-                this.rotation += this.rotationSpeed;
-                if (this.y > canvas.height) this.y = -10;
-            }
-            draw() {
-                ctx.save();
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.rotation * Math.PI / 180);
-                ctx.fillStyle = this.color;
-                ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
-                ctx.restore();
+        // --- TYPEWRITER ---
+        function typeWriter() {
+            if (lineIndex < poemLines.length) {
+                const currentLine = poemLines[lineIndex];
+                if (charIndex < currentLine.length) {
+                    poemEl.innerHTML += currentLine.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeWriter, 35); // 32-38ms target
+                } else {
+                    poemEl.innerHTML += "<br>";
+                    charIndex = 0;
+                    lineIndex++;
+                    setTimeout(typeWriter, 300); // Small pause between lines
+                }
+            } else {
+                btnContinue.style.opacity = 1;
+                btnContinue.style.pointerEvents = 'all';
+                document.querySelector('.cursor').style.display = 'none';
             }
         }
 
-        function startConfetti() {
-            if (animationId) cancelAnimationFrame(animationId);
-            confettiParticles = [];
-            for (let i = 0; i < 100; i++) {
-                confettiParticles.push(new Confetti());
+        // --- NAVIGATION ---
+        function nextScreen() {
+            screens[currentScreen].classList.remove('active');
+            currentScreen++;
+            screens[currentScreen].classList.add('active');
+
+            if (currentScreen === 3) {
+                playFinalAnim();
             }
-            animateConfetti();
         }
 
-        function animateConfetti() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            confettiParticles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            animationId = requestAnimationFrame(animateConfetti);
-        }
-
-        // Cake Interaction
+        // --- INTERACTION LOGIC ---
         cake.addEventListener('click', () => {
-            cake.style.transform = "scale(0.9) rotate(5deg)";
-            setTimeout(() => {
-                cake.style.transform = "scale(1) rotate(0deg)";
-                cake.classList.add('cut');
-                startConfetti();
-
-                document.querySelector('.prompt-text').style.opacity = 0;
-                setTimeout(() => {
-                    msgContainer.style.opacity = 1;
-                    msgContainer.style.pointerEvents = "all";
-                    msgContainer.style.transform = "translateY(0)";
-                }, 500);
-
-            }, 200);
+            launchConfetti();
+            msgContainer.style.opacity = '1';
+            msgContainer.style.pointerEvents = 'all';
+            msgContainer.style.transform = 'translateY(0)';
+            cake.style.pointerEvents = 'none';
+            document.querySelector('.prompt-text').style.opacity = '0';
         });
 
-        // Gift Interaction
         giftBox.addEventListener('click', () => {
             if (!giftBox.classList.contains('open')) {
                 giftBox.classList.add('open');
-                clickHint.style.opacity = 0;
-                funnyMsg.classList.add('visible-msg');
+                document.querySelector('.click-hint').style.opacity = '0';
+
+                // Pop effect for tray (scale 0.85 -> 1)
+                const tray = document.querySelector('.egg-tray-img');
+                tray.style.animation = 'none';
+                tray.style.transform = 'scale(0.85)';
+                setTimeout(() => {
+                    tray.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    tray.style.transform = 'scale(1)';
+                }, 50);
+
+                setTimeout(() => {
+                    funnyMsg.classList.add('visible-msg');
+                }, 600);
             }
         });
 
-        // Navigation Handlers
-        btnContinue.addEventListener('click', () => {
-            screen1.classList.remove('active');
-            screen2.classList.add('active');
-        });
+        btnContinue.addEventListener('click', nextScreen);
+        btnGift.addEventListener('click', nextScreen);
+        btnFinal.addEventListener('click', nextScreen);
+        btnReplay.addEventListener('click', () => location.reload());
 
-        btnGift.addEventListener('click', () => {
-            screen2.classList.remove('active');
-            screen3.classList.add('active');
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Stop confetti
-            if (animationId) cancelAnimationFrame(animationId);
-        });
+        // --- FINAL REVEAL ---
+        function playFinalAnim() {
+            const texts = [
+                document.getElementById('final-text-1'),
+                document.getElementById('final-text-2'),
+                document.getElementById('final-text-3'),
+                document.getElementById('final-text-4'),
+                document.getElementById('final-sig'),
+                document.getElementById('btn-replay')
+            ];
 
-        btnFinal.addEventListener('click', () => {
-            screen3.classList.remove('active');
-            screen4.classList.add('active');
-            triggerFinalClean();
-        });
-
-        btnReplay.addEventListener('click', () => {
-            location.reload();
-        });
-
-        function triggerFinalClean() {
-            const texts = document.querySelectorAll('.final-text, .final-long-msg, .signature, #btn-replay');
-            texts.forEach((el, index) => {
+            let delay = 300;
+            texts.forEach(el => {
                 setTimeout(() => {
                     el.style.opacity = 1;
-                    el.style.transform = "translateY(0)";
-                }, index * 1500 + 500);
+                    el.style.transform = 'translateY(0)';
+                }, delay);
+                delay += 150; // Requested stagger ~0.15s
             });
         }
 
-        // Init
-        // Petal loop
-        setInterval(() => {
-            const petal = document.createElement('div');
-            petal.classList.add('petal');
-            petal.style.left = Math.random() * 100 + 'vw';
-            const size = Math.random() * 10 + 10;
-            petal.style.width = size + 'px';
-            petal.style.height = size + 'px';
-            const duration = Math.random() * 3 + 4;
-            petal.style.animationDuration = duration + 's';
-            document.body.appendChild(petal);
-            setTimeout(() => petal.remove(), duration * 1000);
-        }, 500);
+        // --- CONFETTI ---
+        function launchConfetti() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const particles = [];
+            const colors = ['#FF69B4', '#FFD700', '#87CEEB', '#FFB7C5'];
 
-        typeWriter();
+            for (let i = 0; i < 110; i++) { // ~15% reduced density (was ~130-150)
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height - canvas.height,
+                    vx: Math.random() * 4 - 2,
+                    vy: Math.random() * 4 + 2,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rot: Math.random() * 360,
+                    rotV: Math.random() * 10 - 5
+                });
+            }
+
+            let opacity = 1;
+            function animate() {
+                if (opacity <= 0) return;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.12;
+                    p.rot += p.rotV;
+
+                    ctx.save();
+                    ctx.translate(p.x, p.y);
+                    ctx.rotate(p.rot * Math.PI / 180);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = opacity;
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+                    ctx.restore();
+                });
+
+                opacity -= 0.012; // Adjusted for roughly 1.2s duration
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- INIT ---
+        window.onload = () => {
+            // Typewriter starts AFTER tree growth animation complete (~3.5s)
+            setTimeout(typeWriter, 3500);
+
+            // Petal loop
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.classList.add('petal');
+                petal.style.left = Math.random() * 100 + 'vw';
+                const size = Math.random() * 10 + 10;
+                petal.style.width = size + 'px';
+                petal.style.height = size + 'px';
+                const duration = Math.random() * 3 + 4;
+                petal.style.animationDuration = duration + 's';
+                document.body.appendChild(petal);
+                setTimeout(() => petal.remove(), duration * 1000);
+            }, 600);
+        };
 
     </script>
 </body>
