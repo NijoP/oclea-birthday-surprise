@@ -27,6 +27,38 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* Music Toggle */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(5px);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        .music-control.muted .on {
+            display: none;
+        }
+
+        .music-control:not(.muted) .off {
+            display: none;
+        }
+
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
@@ -503,6 +535,36 @@
             }
         }
 
+        /* Balloons */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 60px;
+            height: 80px;
+            border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.8;
+            animation: float-up linear forwards;
+        }
+
+        .balloon::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            width: 2px;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.1);
+            transform: translateX(-50%);
+        }
+
+        @keyframes float-up {
+            to {
+                transform: translateY(-120vh) translateX(50px) rotate(10deg);
+            }
+        }
+
         /* --- SCREEN 4: FINAL MESSAGE --- */
         #screen-4 {
             background: linear-gradient(135deg, #FFF0F5 0%, #E6E6FA 100%);
@@ -558,6 +620,16 @@
 </head>
 
 <body>
+
+    <!-- Music Control -->
+    <div class="music-control" id="music-btn">
+        <span class="on">🔊</span>
+        <span class="off">🔇</span>
+    </div>
+    <audio id="bg-music" loop>
+        <source src="https://www.chosic.com/wp-content/uploads/2021/05/Happy-Birthday-To-You-Instrumental.mp3"
+            type="audio/mpeg">
+    </audio>
 
     <!-- SCREEN 1: INTRO (Redesign) -->
     <div id="screen-1" class="screen active">
@@ -664,12 +736,15 @@
         const btnReplay = document.getElementById('btn-replay');
         const canvas = document.getElementById('confetti-canvas');
         const ctx = canvas.getContext('2d');
+        const musicBtn = document.getElementById('music-btn');
+        const bgMusic = document.getElementById('bg-music');
 
         // --- STATE ---
         let currentScreen = 0;
         let lineIndex = 0;
         let charIndex = 0;
         let animationId = null;
+        let isMusicPlaying = false;
 
         // --- TYPEWRITER ---
         function typeWriter() {
@@ -701,16 +776,32 @@
             if (currentScreen === 3) {
                 playFinalAnim();
             }
+
+            // Start music on first interaction
+            if (!isMusicPlaying && bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.classList.remove('muted');
+                }).catch(e => console.log("Audio waiting for stronger interaction"));
+            }
         }
 
         // --- INTERACTION LOGIC ---
         cake.addEventListener('click', () => {
             launchConfetti();
+            if (!isMusicPlaying) {
+                bgMusic.play();
+                isMusicPlaying = true;
+                musicBtn.classList.remove('muted');
+            }
             msgContainer.style.opacity = '1';
             msgContainer.style.pointerEvents = 'all';
             msgContainer.style.transform = 'translateY(0)';
             cake.style.pointerEvents = 'none';
             document.querySelector('.prompt-text').style.opacity = '0';
+
+            // Celebration balloons burst
+            for (let i = 0; i < 10; i++) setTimeout(createBalloon, i * 150);
         });
 
         giftBox.addEventListener('click', () => {
@@ -736,6 +827,18 @@
         btnGift.addEventListener('click', nextScreen);
         btnFinal.addEventListener('click', nextScreen);
         btnReplay.addEventListener('click', () => location.reload());
+
+        // --- MUSIC CONTROL ---
+        musicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.add('muted');
+            } else {
+                bgMusic.play();
+                musicBtn.classList.remove('muted');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
 
         // --- FINAL REVEAL ---
         function playFinalAnim() {
@@ -763,15 +866,15 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             const particles = [];
-            const colors = ['#FF69B4', '#FFD700', '#87CEEB', '#FFB7C5'];
+            const colors = ['#FF69B4', '#FFD700', '#87CEEB', '#FFB7C5', '#FF4500'];
 
-            for (let i = 0; i < 110; i++) { // ~15% reduced density (was ~130-150)
+            for (let i = 0; i < 180; i++) { // Increased density for "wow" effect
                 particles.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height - canvas.height,
-                    vx: Math.random() * 4 - 2,
-                    vy: Math.random() * 4 + 2,
-                    size: Math.random() * 8 + 4,
+                    vx: Math.random() * 6 - 3,
+                    vy: Math.random() * 6 + 3,
+                    size: Math.random() * 9 + 4,
                     color: colors[Math.floor(Math.random() * colors.length)],
                     rot: Math.random() * 360,
                     rotV: Math.random() * 10 - 5
@@ -804,6 +907,19 @@
             animate();
         }
 
+        // --- BALLOONS ---
+        function createBalloon() {
+            const colors = ['#FF69B4', '#FFD700', '#87CEEB', '#FFB7C5', '#FF4500'];
+            const b = document.createElement('div');
+            b.classList.add('balloon');
+            b.style.left = Math.random() * 100 + 'vw';
+            b.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            const duration = Math.random() * 3 + 5;
+            b.style.animationDuration = duration + 's';
+            document.body.appendChild(b);
+            setTimeout(() => b.remove(), duration * 1000);
+        }
+
         // --- INIT ---
         window.onload = () => {
             // Typewriter starts almost immediately (~0.8s)
@@ -822,6 +938,9 @@
                 document.body.appendChild(petal);
                 setTimeout(() => petal.remove(), duration * 1000);
             }, 600);
+
+            // Balloon loop
+            setInterval(createBalloon, 1500); // Create a new balloon every 1.5 seconds
         };
 
     </script>
