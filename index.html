@@ -568,25 +568,37 @@
         /* --- SCREEN 4: FINAL MESSAGE --- */
         #screen-4 {
             background: linear-gradient(135deg, #FFF0F5 0%, #E6E6FA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-y: auto;
         }
 
         .final-content {
-            max-width: 600px;
+            display: flex;
+            flex-direction: row-reverse;
+            /* Photo on right */
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            max-width: 1000px;
             width: 100%;
             padding: 2rem;
         }
 
+        .final-text-area {
+            flex: 1;
+            text-align: left;
+            min-height: 300px;
+        }
+
         .final-text {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.9s ease-out;
-            /* Slower fade */
-            color: #5D4037;
+            font-size: 1.6rem;
+            color: #4A4A4A;
+            margin-bottom: 1.2rem;
             line-height: 1.6;
-            /* Premium spacing */
+            font-family: 'Playfair Display', serif;
         }
 
         .highlight {
@@ -596,39 +608,32 @@
         }
 
         .final-long-msg {
-            font-family: 'Outfit', sans-serif;
             font-size: 1.1rem;
+            color: #666;
             line-height: 1.8;
-            /* Premium spacing */
-            margin-top: 2rem;
-            color: #6d4c41;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.9s ease-out;
+            margin-top: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         .signature {
-            margin-top: 1.5rem;
-            font-size: 1rem;
+            margin-top: 2rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #D81B60;
             opacity: 0;
-            transform: translateY(10px);
-            transition: all 0.6s ease;
+            transition: opacity 1s ease;
         }
 
-        /* Portfolio Photo */
+        /* Portfolio Photo (Right Corner) */
         .final-photo-container {
-            width: 260px;
-            margin: 0 auto 1.5rem;
-            padding: 10px 10px 35px;
-            /* Bottom heavy for polaroid look */
+            flex: 0 0 auto;
+            width: 300px;
+            padding: 12px 12px 45px;
             background: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
             border-radius: 4px;
-            transform: rotate(-3deg) translateY(20px);
-            opacity: 0;
-            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: rotate(3deg);
+            transition: all 1s ease;
         }
 
         .final-photo-container img {
@@ -636,6 +641,29 @@
             height: auto;
             border-radius: 2px;
             display: block;
+        }
+
+        @media (max-width: 850px) {
+            .final-content {
+                flex-direction: column;
+                /* Photo Top / Text Bottom */
+                gap: 30px;
+                text-align: center;
+            }
+
+            .final-text-area {
+                text-align: center;
+                min-height: auto;
+            }
+
+            .final-photo-container {
+                width: 220px;
+                transform: rotate(0);
+            }
+
+            .final-text {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
@@ -717,25 +745,15 @@
     <!-- SCREEN 4: FINAL MESSAGE -->
     <div id="screen-4" class="screen">
         <div class="final-content">
-
-            <div class="final-photo-container" id="final-photo">
+            <div class="final-photo-container" id="final-photo" style="opacity:0; transform: translateY(20px);">
                 <img src="WhatsApp Image 2026-02-17 at 2.51.53 AM.jpeg" alt="Memory Photo">
             </div>
-
-            <p class="final-text" id="final-text-1">Once again, happy birthday Auxii.</p>
-            <p class="final-text" id="final-text-2">Some people just become part of your daily life — you’re one of
-                those for me.</p>
-            <p class="final-text highlight" id="final-text-3">Things feel more normal when you’re around. 🌸</p>
-            <div class="final-long-msg" id="final-text-4">
-                You’re doing better than you think.<br>
-                Keep going. 💛
+            <div class="final-text-area" id="final-text-area">
+                <!-- Typewriter will populate this -->
             </div>
-            <div class="signature" id="final-sig">
-                — Your annoying big brother
-            </div>
-            <button class="btn" id="btn-replay" style="margin-top:2rem; opacity:0; pointer-events:all;">Replay
-                ↺</button>
         </div>
+        <button class="btn" id="btn-replay" style="margin-top:2rem; opacity:0; pointer-events:all;">Replay
+            ↺</button>
     </div>
 
 
@@ -867,25 +885,68 @@
             isMusicPlaying = !isMusicPlaying;
         });
 
-        // --- FINAL REVEAL ---
+        // --- FINAL REVEAL (TYPEWRITER V2) ---
         function playFinalAnim() {
-            const texts = [
-                document.getElementById('final-photo'),
-                document.getElementById('final-text-1'),
-                document.getElementById('final-text-2'),
-                document.getElementById('final-text-3'),
-                document.getElementById('final-text-4'),
-                document.getElementById('final-sig'),
-                document.getElementById('btn-replay')
-            ];
+            const photo = document.getElementById('final-photo');
+            const textArea = document.getElementById('final-text-area');
 
-            let delay = 300;
-            texts.forEach(el => {
-                setTimeout(() => {
-                    el.style.opacity = 1;
-                    el.style.transform = 'translateY(0)';
-                }, delay);
-                delay += 150; // Requested stagger ~0.15s
+            // 1. Reveal Photo
+            setTimeout(() => {
+                photo.style.opacity = '1';
+                photo.style.transform = 'rotate(3deg) translateY(0)';
+            }, 600);
+
+            // 2. Start Typewriter after photo reveal
+            setTimeout(() => {
+                startFinalTypewriter();
+            }, 1800);
+        }
+
+        const finalMessages = [
+            "Once again, happy birthday Auxii. 🌸",
+            "Out of all the people in this world, I somehow got stuck with you — professional troublemaker. 🙄",
+            "Things feel more normal when you're around. ✨",
+            "You're doing better than you think. Keep going. 💛",
+            "— Your annoying big brother"
+        ];
+
+        async function startFinalTypewriter() {
+            const container = document.getElementById('final-text-area');
+
+            for (let i = 0; i < finalMessages.length; i++) {
+                const p = document.createElement('p');
+                p.className = (i === finalMessages.length - 1) ? 'signature' :
+                    (i === finalMessages.length - 2) ? 'final-long-msg' : 'final-text';
+
+                if (i === 2) { // Highlight line
+                    p.innerHTML = '<span class="highlight"></span>';
+                    container.appendChild(p);
+                    await typeText(finalMessages[i], p.querySelector('.highlight'));
+                } else {
+                    container.appendChild(p);
+                    await typeText(finalMessages[i], p);
+                }
+
+                if (i === finalMessages.length - 1) p.style.opacity = '1'; // Show signature
+                await new Promise(r => setTimeout(r, 600)); // Pause between lines
+            }
+            // Show replay button after all messages are typed
+            btnReplay.style.opacity = '1';
+        }
+
+        function typeText(text, element) {
+            return new Promise(resolve => {
+                let charIndex = 0;
+                function type() {
+                    if (charIndex < text.length) {
+                        element.textContent += text.charAt(charIndex);
+                        charIndex++;
+                        setTimeout(type, 35);
+                    } else {
+                        resolve();
+                    }
+                }
+                type();
             });
         }
 
