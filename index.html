@@ -113,16 +113,31 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 4rem 3rem;
+            padding: 4rem 2rem;
             max-width: 90%;
-            width: 500px;
+            width: 450px;
 
-            /* Oval Shape */
-            border-radius: 50%;
+            /* Responsive Oval/Round Shape */
+            border-radius: 120px;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             text-align: center;
 
             animation: float-container 6s ease-in-out infinite;
+        }
+
+        @media (max-width: 500px) {
+            .glass-container {
+                padding: 3rem 1.5rem;
+                border-radius: 60px;
+            }
+
+            .intro-title {
+                font-size: 1.8rem;
+            }
+
+            .poem {
+                font-size: 1rem;
+            }
         }
 
         @keyframes float-container {
@@ -212,14 +227,31 @@
         .prompt-text {
             position: relative;
             z-index: 10;
-            margin-bottom: 8rem;
-            /* Maximized spacing */
+            margin-bottom: 4rem;
             color: #5D4037;
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            /* Larger text */
+            font-size: 2rem;
             text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
             font-weight: 700;
+        }
+
+        @media (max-width: 500px) {
+            .prompt-text {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .cake-container {
+                transform: scale(0.8);
+            }
+
+            .cake-container:hover {
+                transform: scale(0.85);
+            }
+
+            .cake-container:active {
+                transform: scale(0.75) rotate(-6deg);
+            }
         }
 
         .cake-container {
@@ -377,50 +409,23 @@
             animation: float-tray 2.5s ease-in-out infinite;
         }
 
-        .egg-tray-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .bullseye-img {
             width: 100%;
             height: auto;
             border-radius: 15px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.4);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .egg-item {
-            position: relative;
-            width: 100%;
-            aspect-ratio: 1;
-            overflow: hidden;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s;
         }
 
-        .egg-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        @media (max-width: 500px) {
+            .gift-container {
+                width: 220px;
+            }
 
-        .egg-label {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            font-size: 0.7rem;
-            padding: 4px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .egg-tray-img {
-            display: none;
-            /* Removed single image */
+            #gift-title {
+                font-size: 1.5rem;
+                margin-bottom: 1rem !important;
+            }
         }
 
         @keyframes float-tray {
@@ -602,32 +607,8 @@
         <h2 id="gift-title" style="margin-bottom: 2rem;">I got something special for you 😌</h2>
 
         <div class="gift-container" id="gift-box">
-            <div class="egg-tray-grid">
-                <!-- Omelette -->
-                <div class="egg-item">
-                    <img src="https://images.unsplash.com/photo-1510693206972-df098062cb71?auto=format&fit=crop&w=300&q=80"
-                        alt="Omelette">
-                    <div class="egg-label">Omelette</div>
-                </div>
-                <!-- Fried (Bullseye) -->
-                <div class="egg-item">
-                    <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=300&q=80"
-                        alt="Bullseye">
-                    <div class="egg-label">Bullseye</div>
-                </div>
-                <!-- Scrambled -->
-                <div class="egg-item">
-                    <img src="https://images.unsplash.com/photo-1551106652-a5bcf4b29ab6?auto=format&fit=crop&w=300&q=80"
-                        alt="Scrambled">
-                    <div class="egg-label">Scrambled</div>
-                </div>
-                <!-- Boiled -->
-                <div class="egg-item">
-                    <img src="https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?auto=format&fit=crop&w=300&q=80"
-                        alt="Boiled">
-                    <div class="egg-label">Boiled</div>
-                </div>
-            </div>
+            <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=600&q=80"
+                alt="Bullseye Egg" class="bullseye-img">
         </div>
 
         <p class="click-hint">Click the tray 🥚</p>
