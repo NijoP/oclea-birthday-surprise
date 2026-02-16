@@ -113,12 +113,12 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            padding: 3rem 2rem;
+            padding: 4rem 3rem;
             max-width: 90%;
-            width: 450px;
+            width: 500px;
 
-            /* Organic Shape */
-            border-radius: 68% 32% 75% 25% / 56% 37% 63% 44%;
+            /* Oval Shape */
+            border-radius: 50%;
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
             text-align: center;
 
@@ -141,7 +141,6 @@
             font-family: 'Playfair Display', serif;
             font-size: 2.2rem;
             color: #880E4F;
-            /* Darker Pink/Purple */
             margin-bottom: 1.5rem;
             opacity: 0;
             animation: fade-in-up 1s ease-out 0.5s forwards;
@@ -166,18 +165,15 @@
 
         .poem {
             font-family: 'Outfit', sans-serif;
-            /* Cleaner font for glass */
             font-size: 1.15rem;
             line-height: 1.6;
             min-height: 120px;
             text-align: center;
-            /* Center align for organic shape */
             white-space: pre-wrap;
             color: #4A235A;
             font-weight: 500;
         }
 
-        /* Cursor logic remains */
         .cursor {
             display: inline-block;
             width: 2px;
@@ -187,7 +183,6 @@
             vertical-align: bottom;
         }
 
-        /* Petals can stay */
         .petal {
             position: absolute;
             background: var(--primary-pink);
@@ -211,13 +206,28 @@
         #screen-2 {
             background-color: #FFF5F8;
             flex-direction: column;
+            justify-content: center;
+        }
+
+        .prompt-text {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 8rem;
+            /* Maximized spacing */
+            color: #5D4037;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            /* Larger text */
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+            font-weight: 700;
         }
 
         .cake-container {
             position: relative;
             width: 250px;
             height: 200px;
-            margin: 3rem auto;
+            margin: 2rem auto;
+            /* Adjusted margin */
             cursor: pointer;
             transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 5;
@@ -345,97 +355,100 @@
             z-index: 1;
         }
 
-        /* --- SCREEN 3: GIFT --- */
+        /* --- SCREEN 3: GIFT (Real Egg Tray) --- */
         #screen-3 {
             background-color: #FFF0F5;
+            background-image: radial-gradient(#FFF0F5 20%, #FFE4E1 80%);
         }
 
         .gift-container {
             position: relative;
-            width: 200px;
-            height: 200px;
-            margin: 3rem auto;
+            width: 300px;
+            height: auto;
+            margin: 2rem auto;
             cursor: pointer;
-            animation: bounce 2s infinite;
+            /* Floating animation */
+            animation: float-tray 3s ease-in-out infinite;
         }
 
-        .gift-body {
-            position: absolute;
-            bottom: 0;
-            width: 200px;
-            height: 150px;
-            background: #FF69B4;
-            border-radius: 0 0 10px 10px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        .egg-tray-img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+            /* Animated Real Egg Tray */
+            animation: bounce-shake 3s ease-in-out infinite;
         }
 
-        .gift-body::before {
-            content: '';
-            position: absolute;
-            left: 90px;
-            width: 20px;
-            height: 100%;
-            background: #FFD700;
+        @keyframes bounce-shake {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            25% {
+                transform: translateY(-5px) rotate(-2deg);
+            }
+
+            50% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            75% {
+                transform: translateY(-3px) rotate(2deg);
+            }
         }
 
-        .gift-lid {
-            position: absolute;
-            top: 20px;
-            left: -10px;
-            width: 220px;
-            height: 50px;
-            background: #FF1493;
-            border-radius: 5px;
-            transition: transform 0.5s ease-in-out;
-            z-index: 2;
+        .gift-container:active .egg-tray-img {
+            transform: scale(0.95);
         }
 
-        .gift-lid::before {
-            content: '';
-            position: absolute;
-            left: 100px;
-            width: 20px;
-            height: 100%;
-            background: #FFD700;
+        @keyframes float-tray {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
         }
 
-        .gift-container.open .gift-lid {
-            transform: translateY(-60px) rotate(-10deg);
-        }
-
-        .eggs-container {
-            position: absolute;
-            bottom: 20px;
-            /* Inside box */
-            left: 10px;
-            width: 180px;
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.5s 0.3s;
-        }
-
-        .gift-container.open .eggs-container {
+        .click-hint {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: #5D4037;
+            animation: pulse 1.5s infinite;
             opacity: 1;
-            transform: translateY(-40px);
-            transition: all 0.5s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.5s;
         }
 
-        .egg {
-            font-size: 2.5rem;
-            animation: wobble 2s infinite ease-in-out;
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         .funny-msg {
             opacity: 0;
             transform: translateY(20px);
-            transition: all 0.5s 0.8s;
+            transition: all 0.5s 0.5s;
+            /* Delay for reveal */
             margin-top: 2rem;
             background: rgba(255, 255, 255, 0.95);
-            padding: 1.5rem;
-            border-radius: 15px;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
         }
 
         .visible-msg {
@@ -561,21 +574,17 @@
         <canvas id="confetti-canvas"></canvas>
     </div>
 
-    <!-- SCREEN 3: GIFT REVEAL -->
+    <!-- SCREEN 3: GIFT REVEAL (Real Egg Tray) -->
     <div id="screen-3" class="screen">
-        <h2 id="gift-title">I got something special for you 😌</h2>
+        <h2 id="gift-title" style="margin-bottom: 2rem;">I got something special for you 😌</h2>
 
         <div class="gift-container" id="gift-box">
-            <div class="gift-lid"></div>
-            <div class="gift-body"></div>
-            <div class="eggs-container">
-                <div class="egg">🥚</div>
-                <div class="egg">🥚</div>
-                <div class="egg">🥚</div>
-            </div>
+            <!-- Real Egg Tray Image (Placeholder) -->
+            <!-- Replace src with your specific 'egg tray png' -->
+            <img src="https://loremflickr.com/400/300/egg,tray" alt="Egg Tray" class="egg-tray-img">
         </div>
 
-        <p class="click-hint">Click to open 🎁</p>
+        <p class="click-hint">Click the tray 🥚</p>
 
         <div class="funny-msg" id="funny-msg">
             <h3>Because I know…<br>no gift can beat your love for eggs 😂🥚</h3>
